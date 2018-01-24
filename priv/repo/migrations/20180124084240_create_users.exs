@@ -5,7 +5,7 @@ defmodule PhoenixAuthentication.Repo.Migrations.CreateUsers do
     create table(:users) do
       add :name, :string
       add :email, :string
-      add :hashed_password, :string
+      add :password_hash, :string
 
       timestamps()
     end

@@ -6,7 +6,8 @@ defmodule PhoenixAuthentication.Accounts.User do
 
   schema "users" do
     field :email, :string
-    field :hashed_password, :string
+    field :password, :string, virtual: true
+    field :password_hash, :string
     field :name, :string
 
     timestamps()
@@ -15,8 +16,8 @@ defmodule PhoenixAuthentication.Accounts.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :hashed_password])
-    |> validate_required([:name, :email, :hashed_password])
+    |> cast(attrs, [:name, :email, :password_hash])
+    |> validate_required([:name, :email, :password_hash])
     |> unique_constraint(:email)
   end
 end
