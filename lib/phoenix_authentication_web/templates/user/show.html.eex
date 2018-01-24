@@ -11,12 +11,7 @@
     <strong>Email:</strong>
     <%= @user.email %>
   </li>
-
-  <li>
-    <strong>Hashed password:</strong>
-    <%= @user.hashed_password %>
-  </li>
-
+  
 </ul>
 
 <span><%= link "Edit", to: user_path(@conn, :edit, @user) %></span>
