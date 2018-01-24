@@ -11,10 +11,9 @@ defmodule PhoenixAuthenticationWeb.AuthController do
     case Accounts.authenticate_by_email_password(email, password) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "Welcome back!")
         |> put_session(:user_id, user.id)
         |> configure_session(renew: true)
-        |> redirect(to: "/")
+        |> redirect(to: secret_garden_path(conn, :index))
       {:error, :unauthorized} ->
         conn
         |> put_flash(:error, "Bad email/password combination")
