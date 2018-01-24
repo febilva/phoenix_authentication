@@ -36,7 +36,7 @@ defmodule PhoenixAuthenticationWeb.UserController do
     user = conn.assigns.current_user
 
     case Accounts.update_user(user, user_params) do
-      {:ok, user} ->
+      {:ok, _user} ->
         conn
         |> put_flash(:info, "User updated successfully.")
         |> redirect(to: user_path(conn, :show))
