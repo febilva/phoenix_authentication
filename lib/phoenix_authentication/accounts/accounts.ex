@@ -101,4 +101,11 @@ defmodule PhoenixAuthentication.Accounts do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
+  def authenticate_by_email_password(email, _password) do
+    case Repo.get_by(User, email: email) do
+      %User{} = user -> {:ok, user}
+      nil -> {:error, :unauthorized}
+    end
+  end
 end

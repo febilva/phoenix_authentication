@@ -17,7 +17,7 @@ defmodule PhoenixAuthentication.Accounts.User do
   def changeset(%User{} = user, attrs) do
     user
     |> cast(attrs, [:name, :email, :password_hash])
-    |> validate_required([:name, :email, :password_hash])
+    |> validate_required([:name, :email])
     |> unique_constraint(:email)
   end
 end

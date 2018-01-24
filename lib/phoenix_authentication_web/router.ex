@@ -14,11 +14,15 @@ defmodule PhoenixAuthenticationWeb.Router do
   end
 
   scope "/", PhoenixAuthenticationWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
     get "/", PageController, :index
 
     resources "/users", UserController
+    
+    get "/login", AuthController, :new
+    post "/login", AuthController, :create
+
   end
 
   # Other scopes may use custom stacks.
