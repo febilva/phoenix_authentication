@@ -14,14 +14,6 @@ defmodule PhoenixAuthentication.Accounts.User do
   end
 
   @doc false
-  def changeset(%User{} = user, attrs) do
-    user
-    |> cast(attrs, [:name, :email, :password_hash])
-    |> validate_required([:name, :email])
-    |> unique_constraint(:email)
-  end
-
-  @doc false
   def update_changeset(%User{} = user, attrs) do
     user
     |> cast(attrs, [:name, :email], [:password])

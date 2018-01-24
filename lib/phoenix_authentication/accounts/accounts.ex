@@ -99,7 +99,7 @@ defmodule PhoenixAuthentication.Accounts do
 
   """
   def change_user(%User{} = user) do
-    User.changeset(user, %{})
+    User.update_changeset(user, %{})
   end
 
   def authenticate_by_email_password(email, _password) do

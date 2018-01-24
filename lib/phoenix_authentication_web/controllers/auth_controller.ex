@@ -2,7 +2,6 @@ defmodule PhoenixAuthenticationWeb.AuthController do
   use PhoenixAuthenticationWeb, :controller
 
   alias PhoenixAuthentication.Accounts
-  alias PhoenixAuthentication.Accounts.User
 
   def new(conn, _params) do
     render conn, "new.html"
