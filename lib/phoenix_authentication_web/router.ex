@@ -28,6 +28,8 @@ defmodule PhoenixAuthenticationWeb.Router do
   scope "/", PhoenixAuthenticationWeb do
     pipe_through [:browser, :authenticate_user]
 
+    delete "/logout", AuthController, :delete
+
     resources "/me", UserController, only: [:show, :edit, :update], singleton: true
   end
 

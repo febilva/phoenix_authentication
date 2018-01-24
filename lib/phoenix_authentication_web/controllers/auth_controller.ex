@@ -21,4 +21,10 @@ defmodule PhoenixAuthenticationWeb.AuthController do
         |> redirect(to: auth_path(conn, :new))
     end
   end
+
+  def delete(conn, _params) do
+    conn
+    |> configure_session(drop: true)
+    |> redirect(to: "/")
+  end
 end
