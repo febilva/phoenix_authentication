@@ -18,11 +18,11 @@
           <ul class="nav nav-pills pull-right">
             <li><a href="<%= secret_garden_path(@conn, :index) %>">Secret Garden</a></li>
             <%= if current_user_exists(@conn) do %>
-              <li><a href="<%= user_path(@conn, :show) %>">Account</a></li>
-              <li><a href="<%= auth_path(@conn, :delete) %>">Logout</a></li>
+              <li><%= link "Account", to: user_path(@conn, :show) %></li>
+              <li><%= link "Logout", to: auth_path(@conn, :delete), method: :delete %></li>
             <% else %>
-              <li><a href="<%= auth_path(@conn, :new) %>">Login</a></li>
-              <li><a href="<%= user_path(@conn, :new) %>">Register</a></li>
+              <li><%= link "Login", to: auth_path(@conn, :new) %></li>
+              <li><%= link "Register", to: user_path(@conn, :new) %></li>
             <% end %>
           </ul>
         </nav>
