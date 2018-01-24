@@ -31,6 +31,8 @@ defmodule PhoenixAuthenticationWeb.Router do
     delete "/logout", AuthController, :delete
 
     resources "/me", UserController, only: [:show, :edit, :update], singleton: true
+    
+    get "/secretgarden", SecretGardenController, :index
   end
 
   # Other scopes may use custom stacks.
@@ -41,12 +43,21 @@ defmodule PhoenixAuthenticationWeb.Router do
   defp authenticate_user(conn, _) do
     case get_session(conn, :user_id) do
       nil ->
-        conn
-        |> Phoenix.Controller.put_flash(:error, "Login required")
-        |> Phoenix.Controller.redirect(to: "/")
-        |> halt()
+        redirect_login_required(conn)
       user_id ->
-        assign(conn, :current_user, PhoenixAuthentication.Accounts.get_user!(user_id))
+        case PhoenixAuthentication.Accounts.get_user(user_id) do
+          nil ->
+            redirect_login_required(conn)
+          %PhoenixAuthentication.Accounts.User{} = user ->
+            assign(conn, :current_user, user)
+        end
     end
+  end
+
+  defp redirect_login_required(conn) do
+    conn
+    |> Phoenix.Controller.put_flash(:error, "Login required")
+    |> Phoenix.Controller.redirect(to: "/")
+    |> halt()
   end
 end
