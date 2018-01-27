@@ -9,8 +9,9 @@ defmodule PhoenixAuthenticationWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  pipeline :auth do
+    plug PhoenixAuthentication.Auth.Pipeline
+    plug :set_user_as_asset
   end
 
   scope "/", PhoenixAuthenticationWeb do
@@ -26,7 +27,7 @@ defmodule PhoenixAuthenticationWeb.Router do
   end
 
   scope "/", PhoenixAuthenticationWeb do
-    pipe_through [:browser, :authenticate_user]
+    pipe_through [:browser, :auth]
 
     delete "/logout", AuthController, :delete
 
@@ -35,29 +36,10 @@ defmodule PhoenixAuthenticationWeb.Router do
     get "/secretgarden", SecretGardenController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", PhoenixAuthenticationWeb do
-  #   pipe_through :api
-  # end
-
-  defp authenticate_user(conn, _) do
-    case get_session(conn, :user_id) do
-      nil ->
-        redirect_login_required(conn)
-      user_id ->
-        case PhoenixAuthentication.Accounts.get_user(user_id) do
-          nil ->
-            redirect_login_required(conn)
-          %PhoenixAuthentication.Accounts.User{} = user ->
-            assign(conn, :current_user, user)
-        end
-    end
+  def set_user_as_asset(conn, _) do
+    user = conn |> PhoenixAuthentication.Auth.Guardian.Plug.current_resource
+    IO.inspect user
+    assign(conn, :current_user, user)    
   end
-
-  defp redirect_login_required(conn) do
-    conn
-    |> Phoenix.Controller.put_flash(:error, "Login required")
-    |> Phoenix.Controller.redirect(to: "/")
-    |> halt()
-  end
+  
 end

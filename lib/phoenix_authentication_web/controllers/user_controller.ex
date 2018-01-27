@@ -3,6 +3,7 @@ defmodule PhoenixAuthenticationWeb.UserController do
 
   alias PhoenixAuthentication.Accounts
   alias PhoenixAuthentication.Accounts.User
+  alias PhoenixAuthentication.Auth.Guardian
 
   def new(conn, _params) do
     changeset = Accounts.change_user(%User{})
@@ -13,8 +14,7 @@ defmodule PhoenixAuthenticationWeb.UserController do
     case Accounts.create_user(user_params) do
       {:ok, user} ->
         conn
-        |> put_session(:user_id, user.id)
-        |> configure_session(renew: true)
+        |> Guardian.Plug.sign_in(user)
         |> redirect(to: secret_garden_path(conn, :index))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

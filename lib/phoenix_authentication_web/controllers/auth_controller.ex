@@ -2,6 +2,7 @@ defmodule PhoenixAuthenticationWeb.AuthController do
   use PhoenixAuthenticationWeb, :controller
 
   alias PhoenixAuthentication.Accounts
+  alias PhoenixAuthentication.Auth.Guardian
 
   def new(conn, _params) do
     render conn, "new.html"
@@ -11,8 +12,7 @@ defmodule PhoenixAuthenticationWeb.AuthController do
     case Accounts.authenticate_by_email_password(email, password) do
       {:ok, user} ->
         conn
-        |> put_session(:user_id, user.id)
-        |> configure_session(renew: true)
+        |> Guardian.Plug.sign_in(user)
         |> redirect(to: secret_garden_path(conn, :index))
       {:error, :unauthorized} ->
         conn
@@ -23,7 +23,7 @@ defmodule PhoenixAuthenticationWeb.AuthController do
 
   def delete(conn, _params) do
     conn
-    |> configure_session(drop: true)
+    |> Guardian.Plug.sign_out()
     |> redirect(to: "/")
   end
 end
