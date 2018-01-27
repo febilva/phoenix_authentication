@@ -22,6 +22,10 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :phoenix_authentication, PhoenixAuthentication.Auth.Guardian,
+  issuer: "phoenix_authentication",
+  secret_key: "TM0VTDhdb9uy47lCNLkW6btdzwYGdnX1gTxoERzvDuUy1L23BmjZVnSHdIj9quOH"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

@@ -11,7 +11,7 @@ defmodule PhoenixAuthentication.Accounts do
   @doc """
   Gets a single user.
 
-  Raises `Ecto.NoResultsError` if the User does not exist.
+  Returns nil if no user was found
 
   ## Examples
 
@@ -19,7 +19,7 @@ defmodule PhoenixAuthentication.Accounts do
       %User{}
 
       iex> get_user(456)
-      ** (Ecto.NoResultsError)
+      ** nil
 
   """
   def get_user(id), do: Repo.get(User, id)
