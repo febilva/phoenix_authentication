@@ -73,10 +73,18 @@ defmodule PhoenixAuthentication.Accounts do
     User.update_changeset(user, %{})
   end
 
-  def authenticate_by_email_password(email, _password) do
-    case Repo.get_by(User, email: email) do
-      %User{} = user -> {:ok, user}
-      nil -> {:error, :unauthorized}
+  def authenticate_by_email_password(email, password) do
+    User
+    |> Repo.get_by(email: email)
+    |> check_password(password)
+  end
+
+  defp check_password(nil, _password), do: {:error, :unauthorized}
+
+  defp check_password(%User{} = user, password) do
+    case Comeonin.Bcrypt.check_pass(user, password) do
+      {:ok, _user} = result -> result
+      {:error, _message} ->  {:error, :unauthorized}
     end
   end
 end
