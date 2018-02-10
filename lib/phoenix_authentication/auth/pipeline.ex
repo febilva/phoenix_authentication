@@ -1,6 +1,6 @@
 defmodule PhoenixAuthentication.Auth.Pipeline do
   use Guardian.Plug.Pipeline,
-    otp_app: :auth_ex,
+    otp_app: :phoenix_authentication,
     error_handler: PhoenixAuthentication.Auth.ErrorHandler,
     module: PhoenixAuthentication.Auth.Guardian
 
